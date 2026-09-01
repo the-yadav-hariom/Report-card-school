@@ -67,7 +67,7 @@
 /* Single Page A4 Print Optimization */
 @media print {
   @page {
-    size: 8.20in 11.00in;
+    size: 8.20in 11.25in;
     margin: 4mm 5mm !important;
   }
   
