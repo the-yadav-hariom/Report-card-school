@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { authService } from '../services/authService';
+import { authService, FIXED_OTP } from '../services/authService';
 import { Mail, Smartphone, KeyRound, ArrowRight, AlertCircle, Eye, EyeOff, CheckCircle2, ShieldCheck, MessageSquare, RotateCcw, Lock } from 'lucide-react';
 
 const Login = () => {
@@ -23,7 +23,6 @@ const Login = () => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [resetStep, setResetStep] = useState(1); // 1: Enter Mobile, 2: Enter OTP, 3: Set New Password
   const [resetMobile, setResetMobile] = useState('7079736741');
-  const [activeOTP, setActiveOTP] = useState('');
   const [enteredOTP, setEnteredOTP] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -69,8 +68,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await authService.sendMobileOTP(resetMobile);
-      setActiveOTP(res.otp);
+      await authService.sendMobileOTP(resetMobile);
       setResetStep(2);
       setOtpTimer(30);
     } catch (err) {
@@ -80,13 +78,13 @@ const Login = () => {
     }
   };
 
-  // Step 2: Verify Entered OTP
+  // Step 2: Verify Entered OTP (Supports Fixed OTP 123456)
   const handleVerifyOTP = (e) => {
     e.preventDefault();
     setError('');
 
-    if (enteredOTP.trim() !== activeOTP) {
-      setError('Incorrect OTP! Please enter the 6-digit code sent to your mobile.');
+    if (enteredOTP.trim() !== FIXED_OTP) {
+      setError(`Incorrect OTP! Please enter the Fixed OTP Code: ${FIXED_OTP}`);
       return;
     }
 
@@ -137,7 +135,7 @@ const Login = () => {
         <p className="mt-1 text-xs text-gray-500">
           {isForgotPassword 
             ? 'Verify mobile number with OTP to set a new password' 
-            : 'Sign in to your administrative dashboard'}
+            : 'Sign in using Mobile Number (7079736741) or Email'}
         </p>
       </div>
 
@@ -323,14 +321,18 @@ const Login = () => {
               {/* STEP 2: Enter & Verify OTP */}
               {resetStep === 2 && (
                 <form onSubmit={handleVerifyOTP} className="space-y-4 text-xs">
-                  {/* Sent SMS Alert */}
+                  {/* Sent SMS Alert with Fixed OTP Notice */}
                   <div className="p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-xl space-y-1 text-center">
                     <p className="font-bold text-xs flex items-center justify-center gap-1.5 text-blue-900">
                       <ShieldCheck className="w-4 h-4 text-blue-600" />
-                      <span>SMS OTP Sent Successfully!</span>
+                      <span>SMS OTP Sent to +91 {resetMobile}</span>
                     </p>
                     <p className="text-[11px] text-blue-700">
-                      An OTP has been dispatched to <strong>+91 {resetMobile}</strong>. Please enter the 6-digit code below.
+                      Please enter the 6-digit OTP code below.
+                      <br />
+                      <span className="inline-block mt-1 bg-maroon text-white px-2.5 py-0.5 rounded-md font-mono font-bold text-xs tracking-wider shadow-sm">
+                        Fixed OTP Code: {FIXED_OTP}
+                      </span>
                     </p>
                   </div>
 
@@ -342,7 +344,7 @@ const Login = () => {
                       required
                       value={enteredOTP}
                       onChange={(e) => setEnteredOTP(e.target.value.replace(/\D/g, ''))}
-                      placeholder="• • • • • •"
+                      placeholder="123456"
                       className="w-full text-center tracking-widest text-lg font-bold py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-maroon focus:ring-1 focus:ring-maroon text-maroon"
                     />
                   </div>
