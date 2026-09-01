@@ -46,7 +46,7 @@ const StudentImageUploader = ({ value, onChange, studentName }) => {
         {/* Preview Frame */}
         <div className="relative shrink-0 group">
           {value ? (
-            <div className="relative w-28 h-28 rounded-xl overflow-hidden border-2 border-maroon shadow-md bg-white">
+            <div className="relative w-36 h-36 rounded-xl overflow-hidden border-2 border-maroon shadow-md bg-white">
               <img
                 src={value}
                 alt={studentName || 'Student Photo'}
@@ -62,7 +62,7 @@ const StudentImageUploader = ({ value, onChange, studentName }) => {
               </button>
             </div>
           ) : (
-            <div className="w-28 h-28 rounded-xl border-2 border-dashed border-gray-300 bg-white flex flex-col items-center justify-center gap-1.5 text-gray-400">
+            <div className="w-36 h-36 rounded-xl border-2 border-dashed border-gray-300 bg-white flex flex-col items-center justify-center gap-1.5 text-gray-400">
               <User className="w-8 h-8 text-gray-300" />
               <span className="text-[10px] font-semibold text-gray-500">No Photo</span>
             </div>

@@ -45,11 +45,11 @@ const ReportCard = ({ student, school }) => {
         {/* Photo / Initials */}
         <div className="flex justify-center sm:justify-start items-center">
           {student.studentPhoto ? (
-            <div className="w-16 h-16 print:w-14 print:h-14 rounded-lg overflow-hidden border-2 border-maroon/40 shadow-sm bg-white p-0.5">
+            <div className="w-36 h-36 print:w-28 print:h-28 rounded-lg overflow-hidden border-2 border-maroon/40 shadow-sm bg-white p-0.5">
               <img src={student.studentPhoto} alt={student.studentName} className="w-full h-full object-cover rounded" />
             </div>
           ) : (
-            <div className="w-16 h-16 print:w-14 print:h-14 rounded-lg bg-maroon/10 border-2 border-maroon/30 text-maroon font-extrabold text-xl print:text-lg flex items-center justify-center shadow-inner">
+            <div className="w-36 h-36 print:w-28 print:h-28 rounded-lg bg-maroon/10 border-2 border-maroon/30 text-maroon font-extrabold text-2xl print:text-xl flex items-center justify-center shadow-inner">
               {student.initials || 'ST'}
             </div>
           )}
