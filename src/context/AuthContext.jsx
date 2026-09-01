@@ -4,21 +4,24 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [token, setToken] = useState(sessionStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Restore session if token exists
-    const storedUser = localStorage.getItem('user');
+    // Restore session from sessionStorage (cleared automatically on tab/browser close)
+    const storedUser = sessionStorage.getItem('user');
     if (storedUser && token) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (e) {
         console.error('Failed to parse cached user session');
+        logout();
       }
     } else {
       setUser(null);
       setToken(null);
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('token');
     }
@@ -28,8 +31,8 @@ export const AuthProvider = ({ children }) => {
   const login = (userData, authToken) => {
     setUser(userData);
     setToken(authToken);
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', authToken);
+    sessionStorage.setItem('user', JSON.stringify(userData));
+    sessionStorage.setItem('token', authToken);
   };
 
   const register = (registerData) => {
@@ -47,6 +50,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('token');
   };
