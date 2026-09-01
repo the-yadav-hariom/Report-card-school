@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { studentService } from '../services/studentService';
 import { computeStudentTotals } from '../services/initialData';
-import { Plus, Search, Filter, Edit, Eye, Trash2, UserPlus, Users } from 'lucide-react';
+import { Plus, Search, Filter, Edit, Eye, Trash2, UserPlus, RefreshCw } from 'lucide-react';
 
 const Students = () => {
   const navigate = useNavigate();
@@ -10,14 +10,29 @@ const Students = () => {
   const [search, setSearch] = useState('');
   const [selectedClass, setSelectedClass] = useState('all');
   const [selectedSection, setSelectedSection] = useState('all');
+  const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
     loadStudents();
+    
+    // Auto-sync with central server every 5 seconds
+    const interval = setInterval(() => {
+      loadStudents(true);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const loadStudents = async () => {
-    const data = await studentService.getAllStudents();
-    setStudents(data);
+  const loadStudents = async (silent = false) => {
+    if (!silent) setIsSyncing(true);
+    try {
+      const data = await studentService.getAllStudents();
+      setStudents(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      if (!silent) setIsSyncing(false);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -29,16 +44,16 @@ const Students = () => {
 
   const filteredStudents = students.filter((s) => {
     const matchesSearch =
-      s.studentName.toLowerCase().includes(search.toLowerCase()) ||
-      s.enrollmentNumber.toLowerCase().includes(search.toLowerCase()) ||
-      String(s.rollNumber).includes(search);
+      (s.studentName || '').toLowerCase().includes(search.toLowerCase()) ||
+      (s.enrollmentNumber || '').toLowerCase().includes(search.toLowerCase()) ||
+      String(s.rollNumber || '').includes(search);
     const matchesClass = selectedClass === 'all' || String(s.className) === selectedClass;
-    const matchesSection = selectedSection === 'all' || s.section.toUpperCase() === selectedSection.toUpperCase();
+    const matchesSection = selectedSection === 'all' || (s.section || '').toUpperCase() === selectedSection.toUpperCase();
     return matchesSearch && matchesClass && matchesSection;
   });
 
   const uniqueClasses = Array.from(new Set(students.map((s) => String(s.className)))).sort();
-  const uniqueSections = Array.from(new Set(students.map((s) => s.section.toUpperCase()))).sort();
+  const uniqueSections = Array.from(new Set(students.map((s) => (s.section || 'A').toUpperCase()))).sort();
 
   return (
     <div className="space-y-6 font-body pb-10">
@@ -50,7 +65,17 @@ const Students = () => {
           <p className="text-xs text-gray-500">Manage student enrollments, edit credentials, and trigger report cards</p>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
+          <button
+            onClick={() => loadStudents()}
+            disabled={isSyncing}
+            className="px-3.5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-xs"
+            title="Sync latest student data across devices"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-maroon ${isSyncing ? 'animate-spin' : ''}`} />
+            <span>{isSyncing ? 'Syncing...' : 'Sync Server Data'}</span>
+          </button>
+
           <button
             onClick={() => navigate('/create-report-card')}
             className="px-4 py-2 bg-gold/20 text-maroon hover:bg-gold/30 border border-gold/40 text-xs font-extrabold rounded-xl transition-all flex items-center gap-2 shadow-xs"
