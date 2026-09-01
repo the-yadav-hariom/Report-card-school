@@ -24,7 +24,11 @@ export const studentService = {
   getAllStudents: async () => {
     try {
       const response = await api.get('/students');
-      return response.data;
+      if (Array.isArray(response.data)) {
+        saveStoredStudents(response.data);
+        return response.data;
+      }
+      return getStoredStudents();
     } catch (e) {
       return getStoredStudents();
     }
@@ -43,24 +47,28 @@ export const studentService = {
   createStudent: async (studentData) => {
     try {
       const response = await api.post('/students', studentData);
-      return response.data;
+      const created = response.data;
+      const current = getStoredStudents();
+      const updated = [created, ...current.filter(s => String(s.id) !== String(created.id))];
+      saveStoredStudents(updated);
+      return created;
     } catch (e) {
       const students = getStoredStudents();
-      const newId = students.length ? Math.max(...students.map(s => s.id)) + 1 : 1;
+      const newId = students.length ? Math.max(...students.map(s => s.id || 0)) + 1 : 1;
       const initials = studentData.studentName
         ? studentData.studentName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
         : 'ST';
 
       const newStudent = {
         id: newId,
-        studentName: studentData.studentName.toUpperCase(),
-        fatherName: studentData.fatherName.toUpperCase(),
-        motherName: studentData.motherName.toUpperCase(),
+        studentName: (studentData.studentName || '').toUpperCase(),
+        fatherName: (studentData.fatherName || '').toUpperCase(),
+        motherName: (studentData.motherName || '').toUpperCase(),
         dob: studentData.dob || '01/01/2015',
         enrollmentNumber: studentData.enrollmentNumber || `ENR-${Math.floor(1000 + Math.random() * 9000)}`,
         rollNumber: studentData.rollNumber,
         className: studentData.className,
-        section: studentData.section.toUpperCase(),
+        section: (studentData.section || 'A').toUpperCase(),
         house: studentData.house || 'Yellow House',
         address: studentData.address || 'Siwan, Bihar',
         academicSession: studentData.academicSession || '2024-25',
@@ -101,7 +109,14 @@ export const studentService = {
   updateStudent: async (id, updatedFields) => {
     try {
       const response = await api.put(`/students/${id}`, updatedFields);
-      return response.data;
+      const updated = response.data;
+      const current = getStoredStudents();
+      const idx = current.findIndex(s => String(s.id) === String(id));
+      if (idx !== -1) {
+        current[idx] = { ...current[idx], ...updated };
+        saveStoredStudents(current);
+      }
+      return updated;
     } catch (e) {
       const students = getStoredStudents();
       const idx = students.findIndex(s => String(s.id) === String(id));
@@ -117,11 +132,10 @@ export const studentService = {
   deleteStudent: async (id) => {
     try {
       await api.delete(`/students/${id}`);
-    } catch (e) {
-      const students = getStoredStudents();
-      const updated = students.filter(s => String(s.id) !== String(id));
-      saveStoredStudents(updated);
-    }
+    } catch (e) { }
+    const students = getStoredStudents();
+    const updated = students.filter(s => String(s.id) !== String(id));
+    saveStoredStudents(updated);
   },
 
   verifyStudentResult: async (searchQuery, className) => {
