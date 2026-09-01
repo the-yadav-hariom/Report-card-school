@@ -23,3 +23,5 @@ dist-isolation
 *.sln
 *.sw?
 push_to_github.js
+target/
+backend/target/

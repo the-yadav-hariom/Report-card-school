@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 8080 --host",
+    "dev": "node server.js & vite --port 8080 --host",
+    "server": "node server.js",
     "build": "vite build",
     "preview": "vite preview"
   },

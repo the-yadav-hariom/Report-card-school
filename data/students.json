@@ -1,0 +1,280 @@
+[
+  {
+    "id": 1,
+    "studentName": "SUNIDHI KUMARI",
+    "fatherName": "RAJAN KUMAR",
+    "motherName": "NITU DEVI",
+    "dob": "06/01/2015",
+    "enrollmentNumber": "197",
+    "rollNumber": "4",
+    "className": "3",
+    "section": "A",
+    "house": "Red House",
+    "address": "Ward No-01 Lakhraw Siwan (Bihar)",
+    "academicSession": "2024-25",
+    "studentPhoto": "https://images.unsplash.com/photo-1544717305-2782549b5136?w=300&auto=format&fit=crop&q=80",
+    "initials": "SK",
+    "status": "Enrolled",
+    "attendance": {
+      "t1Present": 54,
+      "t1Total": 60,
+      "hyPresent": 55,
+      "hyTotal": 60,
+      "t2Present": 58,
+      "t2Total": 60,
+      "annualPresent": 56,
+      "annualTotal": 60
+    },
+    "coScholastic": [
+      {
+        "id": 1,
+        "activity": "Work Education",
+        "hyGrade": "A",
+        "annualGrade": "A"
+      },
+      {
+        "id": 2,
+        "activity": "Art Education",
+        "hyGrade": "A",
+        "annualGrade": "A"
+      },
+      {
+        "id": 3,
+        "activity": "Sports / Yoga / NCC",
+        "hyGrade": "B",
+        "annualGrade": "B"
+      }
+    ],
+    "remarks": "Sunidhi shows exceptional curiosity in Science and Computer studies. Keep up the brilliant work!",
+    "resultStatus": "Promote",
+    "scholastic": [
+      {
+        "subject": "HINDI",
+        "per1": 7,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 65,
+        "per2": 8,
+        "nb2": 5,
+        "sea2": 4,
+        "yr2": 70
+      },
+      {
+        "subject": "ENGLISH",
+        "per1": 6,
+        "nb1": 4,
+        "sea1": 5,
+        "hy1": 34,
+        "per2": 7,
+        "nb2": 4,
+        "sea2": 5,
+        "yr2": 55
+      },
+      {
+        "subject": "MATHS",
+        "per1": 5,
+        "nb1": 4,
+        "sea1": 5,
+        "hy1": 51,
+        "per2": 8,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 68
+      },
+      {
+        "subject": "GK",
+        "per1": 7,
+        "nb1": 4,
+        "sea1": 5,
+        "hy1": 41,
+        "per2": 7,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 60
+      },
+      {
+        "subject": "DRAWING",
+        "per1": 7,
+        "nb1": 4,
+        "sea1": 5,
+        "hy1": 65,
+        "per2": 9,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 75
+      },
+      {
+        "subject": "SANSKRIT",
+        "per1": 6,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 54,
+        "per2": 7,
+        "nb2": 4,
+        "sea2": 5,
+        "yr2": 66
+      },
+      {
+        "subject": "SCIENCE",
+        "per1": 7,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 46,
+        "per2": 8,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 62
+      },
+      {
+        "subject": "COMPUTER",
+        "per1": 8,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 73,
+        "per2": 9,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 78
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "studentName": "ELEANOR RICHARDS",
+    "fatherName": "DAVID RICHARDS",
+    "motherName": "CLARA RICHARDS",
+    "dob": "12/04/2008",
+    "enrollmentNumber": "STU-2023-084",
+    "rollNumber": "1",
+    "className": "11",
+    "section": "Science",
+    "house": "Blue House",
+    "address": "Academic Colony, Siwan",
+    "academicSession": "2024-25",
+    "studentPhoto": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80",
+    "initials": "ER",
+    "status": "Enrolled",
+    "attendance": {
+      "t1Present": 58,
+      "t1Total": 60,
+      "hyPresent": 59,
+      "hyTotal": 60,
+      "t2Present": 60,
+      "t2Total": 60,
+      "annualPresent": 59,
+      "annualTotal": 60
+    },
+    "coScholastic": [
+      {
+        "id": 1,
+        "activity": "Work Education",
+        "hyGrade": "A",
+        "annualGrade": "A"
+      },
+      {
+        "id": 2,
+        "activity": "Art Education",
+        "hyGrade": "A",
+        "annualGrade": "A"
+      },
+      {
+        "id": 3,
+        "activity": "Sports / Yoga / NCC",
+        "hyGrade": "A",
+        "annualGrade": "A"
+      }
+    ],
+    "remarks": "Outstanding performance across all subjects. Top student in class!",
+    "resultStatus": "Promote",
+    "scholastic": [
+      {
+        "subject": "HINDI",
+        "per1": 9,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 75,
+        "per2": 9,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 78
+      },
+      {
+        "subject": "ENGLISH",
+        "per1": 9,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 76,
+        "per2": 9,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 80
+      },
+      {
+        "subject": "MATHS",
+        "per1": 10,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 78,
+        "per2": 10,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 80
+      },
+      {
+        "subject": "GK",
+        "per1": 8,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 70,
+        "per2": 9,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 75
+      },
+      {
+        "subject": "DRAWING",
+        "per1": 8,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 72,
+        "per2": 9,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 75
+      },
+      {
+        "subject": "SANSKRIT",
+        "per1": 8,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 68,
+        "per2": 9,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 72
+      },
+      {
+        "subject": "SCIENCE",
+        "per1": 9,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 74,
+        "per2": 10,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 78
+      },
+      {
+        "subject": "COMPUTER",
+        "per1": 10,
+        "nb1": 5,
+        "sea1": 5,
+        "hy1": 80,
+        "per2": 10,
+        "nb2": 5,
+        "sea2": 5,
+        "yr2": 80
+      }
+    ]
+  }
+]
