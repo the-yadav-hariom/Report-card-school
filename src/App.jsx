@@ -41,80 +41,19 @@ const ProtectedLayout = ({ children }) => {
   );
 };
 
-const ReportCardWrapper = () => {
-  const { isAuthenticated } = useAuth();
-
-  if (isAuthenticated) {
-    return (
-      <ProtectedLayout>
-        <ReportCardPage />
-      </ProtectedLayout>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-8 font-body">
-      <div className="max-w-6xl mx-auto space-y-4">
-        <div className="no-print bg-maroon text-white p-4 rounded-xl flex items-center justify-between shadow-md">
-          <div className="flex items-center gap-3">
-            <img src="/mahaviri_shishu_vidya_mandir_logo/screen.png" alt="Logo" className="w-10 h-10 bg-white p-1 rounded" />
-            <div>
-              <h1 className="font-heading font-extrabold text-base">MAHAVIRI SHISHU VIDYA MANDIR</h1>
-              <p className="text-[11px] text-gold-light font-medium">Student Result Portal & Live Report Card Management</p>
-            </div>
-          </div>
-          <a href="/login" className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg text-xs font-bold transition-all">
-            Admin Login
-          </a>
-        </div>
-
-        <ReportCardPage />
-      </div>
-    </div>
-  );
-};
-
-const UpdateReportCardWrapper = () => {
-  const { isAuthenticated } = useAuth();
-
-  if (isAuthenticated) {
-    return (
-      <ProtectedLayout>
-        <UpdateReportCardPage />
-      </ProtectedLayout>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-8 font-body">
-      <div className="max-w-6xl mx-auto space-y-4">
-        <div className="no-print bg-maroon text-white p-4 rounded-xl flex items-center justify-between shadow-md">
-          <div className="flex items-center gap-3">
-            <img src="/mahaviri_shishu_vidya_mandir_logo/screen.png" alt="Logo" className="w-10 h-10 bg-white p-1 rounded" />
-            <div>
-              <h1 className="font-heading font-extrabold text-base">MAHAVIRI SHISHU VIDYA MANDIR</h1>
-              <p className="text-[11px] text-gold-light font-medium">Full Report Card Data Editor Page</p>
-            </div>
-          </div>
-          <a href="/login" className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg text-xs font-bold transition-all">
-            Admin Login
-          </a>
-        </div>
-
-        <UpdateReportCardPage />
-      </div>
-    </div>
-  );
-};
-
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
 
   return (
     <Routes>
+      {/* Root Route - Force login first */}
+      <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
+      
+      {/* Login Route */}
       <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
       <Route path="/register" element={<Navigate to="/login" replace />} />
 
+      {/* Protected Report Card & Management Routes (Require Email & Password Login) */}
       <Route
         path="/dashboard"
         element={
@@ -163,8 +102,6 @@ const AppRoutes = () => {
           </ProtectedLayout>
         }
       />
-
-      {/* Create New Report Card Route */}
       <Route
         path="/create-report-card"
         element={
@@ -173,16 +110,41 @@ const AppRoutes = () => {
           </ProtectedLayout>
         }
       />
+      <Route
+        path="/update-report-card"
+        element={
+          <ProtectedLayout>
+            <UpdateReportCardPage />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/update-report-card/:id"
+        element={
+          <ProtectedLayout>
+            <UpdateReportCardPage />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/report-cards"
+        element={
+          <ProtectedLayout>
+            <ReportCardPage />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/result"
+        element={
+          <ProtectedLayout>
+            <ReportCardPage />
+          </ProtectedLayout>
+        }
+      />
 
-      {/* Dedicated Update Report Card Data Page Routes */}
-      <Route path="/update-report-card" element={<UpdateReportCardWrapper />} />
-      <Route path="/update-report-card/:id" element={<UpdateReportCardWrapper />} />
-
-      {/* Direct Report Card & Result Routes (Accessible without Admin login) */}
-      <Route path="/report-cards" element={<ReportCardWrapper />} />
-      <Route path="/result" element={<ReportCardWrapper />} />
-
-      <Route path="*" element={<Navigate to="/report-cards" replace />} />
+      {/* Catch-all redirects to Login if unauthenticated */}
+      <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
     </Routes>
   );
 };

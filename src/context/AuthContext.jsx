@@ -17,17 +17,10 @@ export const AuthProvider = ({ children }) => {
         console.error('Failed to parse cached user session');
       }
     } else {
-      // Default demo login session for admin
-      const defaultUser = {
-        name: 'Dr. Rajan Kumar',
-        email: 'admin@mahavirishishu.edu.in',
-        schoolName: 'MAHAVIRI SHISHU VIDYA MANDIR',
-        role: 'ADMIN'
-      };
-      setUser(defaultUser);
-      setToken('demo-jwt-token-xyz123');
-      localStorage.setItem('user', JSON.stringify(defaultUser));
-      localStorage.setItem('token', 'demo-jwt-token-xyz123');
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
     setLoading(false);
   }, []);
