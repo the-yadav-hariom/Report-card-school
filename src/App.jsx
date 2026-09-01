@@ -19,6 +19,7 @@ import CreateReportCardPage from './pages/CreateReportCardPage';
 const ProtectedLayout = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center text-xs font-bold text-maroon">Loading Application...</div>;
@@ -30,10 +31,10 @@ const ProtectedLayout = ({ children }) => {
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-900">
-      <Sidebar />
+      <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
       <div className="flex-1 flex flex-col min-w-0">
-        <Navbar />
-        <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+        <Navbar onMenuClick={() => setIsMobileMenuOpen(true)} />
+        <main className="flex-1 p-3 sm:p-6 md:p-8 overflow-y-auto">
           {children}
         </main>
       </div>
