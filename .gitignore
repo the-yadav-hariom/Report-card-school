@@ -22,3 +22,4 @@ dist-isolation
 *.njsproj
 *.sln
 *.sw?
+push_to_github.js
