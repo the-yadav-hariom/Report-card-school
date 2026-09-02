@@ -44,6 +44,29 @@ const AdmitCard = ({ data, isEditing, onDataChange }) => {
     }
   };
 
+  const handleAddSubjectRow = () => {
+    if (onDataChange) {
+      const updatedSchedule = [
+        ...(data.examSchedule || []),
+        {
+          date: '16/03/2025',
+          day: 'Sunday',
+          subject: 'EXTRA SUBJECT',
+          time: '09:00 AM - 12:00 PM',
+          roomNo: 'Hall-01'
+        }
+      ];
+      onDataChange({ ...data, examSchedule: updatedSchedule });
+    }
+  };
+
+  const handleRemoveSubjectRow = (index) => {
+    if (onDataChange) {
+      const updatedSchedule = data.examSchedule.filter((_, idx) => idx !== index);
+      onDataChange({ ...data, examSchedule: updatedSchedule });
+    }
+  };
+
   return (
     <div className="report-card-printable max-w-4xl mx-auto bg-white border-2 border-maroon p-4 sm:p-5 rounded-xl shadow-xl text-gray-900 font-body relative overflow-hidden my-3">
       
@@ -399,10 +422,21 @@ const AdmitCard = ({ data, isEditing, onDataChange }) => {
 
         {/* Examination Schedule / Timetable Table */}
         <div className="my-2">
-          <h3 className="text-[11px] font-black text-maroon uppercase tracking-wider mb-1 flex items-center gap-1 border-b-2 border-maroon pb-0.5">
-            <Calendar className="w-3 h-3" />
-            <span>Examination Schedule & Subject Timetable</span>
-          </h3>
+          <div className="flex items-center justify-between border-b-2 border-maroon pb-0.5 mb-1">
+            <h3 className="text-[11px] font-black text-maroon uppercase tracking-wider flex items-center gap-1">
+              <Calendar className="w-3 h-3" />
+              <span>Examination Schedule & Subject Timetable</span>
+            </h3>
+            {isEditing && (
+              <button
+                type="button"
+                onClick={handleAddSubjectRow}
+                className="no-print px-2 py-0.5 bg-maroon text-white font-extrabold text-[9.5px] rounded hover:bg-maroon-dark transition-all"
+              >
+                + Add Extra Subject
+              </button>
+            )}
+          </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse border border-gray-300 text-[10.5px]">
@@ -415,6 +449,7 @@ const AdmitCard = ({ data, isEditing, onDataChange }) => {
                   <th className="p-1.5 border border-gray-300 w-32">Time Slot</th>
                   <th className="p-1.5 border border-gray-300 w-20 text-center">Room No</th>
                   <th className="p-1.5 border border-gray-300 text-center w-24">Invigilator</th>
+                  {isEditing && <th className="no-print p-1.5 border border-gray-300 text-center w-8">Action</th>}
                 </tr>
               </thead>
               <tbody>
@@ -498,6 +533,20 @@ const AdmitCard = ({ data, isEditing, onDataChange }) => {
                     <td className="p-1 border border-gray-300 text-center">
                       <div className="h-5 border border-dashed border-gray-300 rounded bg-gray-50/50"></div>
                     </td>
+
+                    {/* Delete Subject Row Action */}
+                    {isEditing && (
+                      <td className="no-print p-1 border border-gray-300 text-center">
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveSubjectRow(idx)}
+                          className="text-red-600 hover:text-red-800 font-bold text-[11px]"
+                          title="Remove Subject"
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
