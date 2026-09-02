@@ -1,7 +1,7 @@
 import api from './api';
 
 const AUTH_KEY = 'school_auth_credentials';
-export const FIXED_OTP = '123456';
+export const FIXED_OTP = '654321';
 
 const getStoredCredentials = () => {
   try {
@@ -54,14 +54,14 @@ export const authService = {
         };
       }
 
-      throw new Error('Invalid mobile number/email or password');
+      throw new Error('Invalid mobile number or password');
     }
   },
 
   sendMobileOTP: async (identifier) => {
     const cleanId = (identifier || '').trim();
     
-    // Set Fixed OTP 123456
+    // Set Fixed OTP 654321
     const otp = FIXED_OTP;
 
     sessionStorage.setItem('current_reset_otp', otp);
@@ -78,9 +78,9 @@ export const authService = {
   verifyOTPAndResetPassword: async (identifier, enteredOTP, newPassword) => {
     const cleanOTP = (enteredOTP || '').trim();
 
-    // Accept FIXED_OTP (123456) or session stored OTP
+    // Accept FIXED_OTP (654321) or session stored OTP
     if (cleanOTP !== FIXED_OTP && cleanOTP !== sessionStorage.getItem('current_reset_otp')) {
-      throw new Error('Invalid OTP! Please use the fixed OTP code: 123456');
+      throw new Error('Invalid OTP! Please check your 6-digit code and try again.');
     }
 
     // Update stored password

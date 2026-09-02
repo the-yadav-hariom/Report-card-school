@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authService, FIXED_OTP } from '../services/authService';
-import { Mail, Smartphone, KeyRound, ArrowRight, AlertCircle, Eye, EyeOff, CheckCircle2, ShieldCheck, MessageSquare, RotateCcw, Lock } from 'lucide-react';
+import { Smartphone, KeyRound, ArrowRight, AlertCircle, Eye, EyeOff, CheckCircle2, ShieldCheck, MessageSquare, RotateCcw, Lock } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  
-  // Login Mode: 'MOBILE' or 'EMAIL'
-  const [loginMode, setLoginMode] = useState('MOBILE');
 
   // Input states
   const [mobileNumber, setMobileNumber] = useState('7079736741');
-  const [emailAddress, setEmailAddress] = useState('admin@mahavirishishu.edu.in');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -38,16 +34,14 @@ const Login = () => {
     return () => clearInterval(timer);
   }, [resetStep, otpTimer]);
 
-  // Handle Standard Login
+  // Handle Standard Login (Mobile Number Only)
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    const identifier = loginMode === 'MOBILE' ? mobileNumber : emailAddress;
-
     try {
-      const result = await authService.login(identifier, password);
+      const result = await authService.login(mobileNumber, password);
       login(result.user, result.token);
       navigate('/dashboard');
     } catch (err) {
@@ -78,13 +72,13 @@ const Login = () => {
     }
   };
 
-  // Step 2: Verify Entered OTP (Supports Fixed OTP 123456)
+  // Step 2: Verify Entered OTP
   const handleVerifyOTP = (e) => {
     e.preventDefault();
     setError('');
 
     if (enteredOTP.trim() !== FIXED_OTP) {
-      setError(`Incorrect OTP! Please enter the Fixed OTP Code: ${FIXED_OTP}`);
+      setError('Incorrect OTP! Please check your 6-digit code and try again.');
       return;
     }
 
@@ -135,7 +129,7 @@ const Login = () => {
         <p className="mt-1 text-xs text-gray-500">
           {isForgotPassword 
             ? 'Verify mobile number with OTP to set a new password' 
-            : 'Sign in using Mobile Number (7079736741) or Email'}
+            : 'Sign in using Mobile Number'}
         </p>
       </div>
 
@@ -151,76 +145,23 @@ const Login = () => {
           )}
 
           {!isForgotPassword ? (
-            /* Standard Login Form */
+            /* Standard Login Form (Phone Number Only) */
             <div className="space-y-5 text-xs">
-              
-              {/* Login Method Toggle Tabs */}
-              <div className="flex bg-gray-100 p-1 rounded-xl gap-1">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLoginMode('MOBILE');
-                    setError('');
-                  }}
-                  className={`flex-1 py-2 px-3 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
-                    loginMode === 'MOBILE' 
-                      ? 'bg-white text-maroon shadow-sm border border-gray-200' 
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <Smartphone className="w-3.5 h-3.5" />
-                  <span>Mobile Number</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLoginMode('EMAIL');
-                    setError('');
-                  }}
-                  className={`flex-1 py-2 px-3 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
-                    loginMode === 'EMAIL' 
-                      ? 'bg-white text-maroon shadow-sm border border-gray-200' 
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Email Address</span>
-                </button>
-              </div>
-
               <form onSubmit={handleLoginSubmit} className="space-y-4">
-                {loginMode === 'MOBILE' ? (
-                  <div>
-                    <label className="block font-semibold text-gray-700 mb-1">Mobile Number</label>
-                    <div className="relative">
-                      <Smartphone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                      <input
-                        type="tel"
-                        required
-                        value={mobileNumber}
-                        onChange={(e) => setMobileNumber(e.target.value)}
-                        placeholder="Enter 10-digit mobile number (7079736741)"
-                        className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:bg-white focus:border-maroon focus:ring-1 focus:ring-maroon font-semibold"
-                      />
-                    </div>
+                <div>
+                  <label className="block font-semibold text-gray-700 mb-1">Mobile Number</label>
+                  <div className="relative">
+                    <Smartphone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="tel"
+                      required
+                      value={mobileNumber}
+                      onChange={(e) => setMobileNumber(e.target.value)}
+                      placeholder="Enter 10-digit mobile number (e.g. 7079736741)"
+                      className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:bg-white focus:border-maroon focus:ring-1 focus:ring-maroon font-semibold"
+                    />
                   </div>
-                ) : (
-                  <div>
-                    <label className="block font-semibold text-gray-700 mb-1">Email Address</label>
-                    <div className="relative">
-                      <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                      <input
-                        type="email"
-                        required
-                        value={emailAddress}
-                        onChange={(e) => setEmailAddress(e.target.value)}
-                        placeholder="Enter your email address"
-                        className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:bg-white focus:border-maroon focus:ring-1 focus:ring-maroon"
-                      />
-                    </div>
-                  </div>
-                )}
+                </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-1">
@@ -321,18 +262,14 @@ const Login = () => {
               {/* STEP 2: Enter & Verify OTP */}
               {resetStep === 2 && (
                 <form onSubmit={handleVerifyOTP} className="space-y-4 text-xs">
-                  {/* Sent SMS Alert with Fixed OTP Notice */}
+                  {/* Sent SMS Alert */}
                   <div className="p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-xl space-y-1 text-center">
                     <p className="font-bold text-xs flex items-center justify-center gap-1.5 text-blue-900">
                       <ShieldCheck className="w-4 h-4 text-blue-600" />
                       <span>SMS OTP Sent to +91 {resetMobile}</span>
                     </p>
                     <p className="text-[11px] text-blue-700">
-                      Please enter the 6-digit OTP code below.
-                      <br />
-                      <span className="inline-block mt-1 bg-maroon text-white px-2.5 py-0.5 rounded-md font-mono font-bold text-xs tracking-wider shadow-sm">
-                        Fixed OTP Code: {FIXED_OTP}
-                      </span>
+                      Please enter the 6-digit OTP code sent to your registered mobile number.
                     </p>
                   </div>
 
@@ -344,7 +281,7 @@ const Login = () => {
                       required
                       value={enteredOTP}
                       onChange={(e) => setEnteredOTP(e.target.value.replace(/\D/g, ''))}
-                      placeholder="123456"
+                      placeholder="••••••"
                       className="w-full text-center tracking-widest text-lg font-bold py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:border-maroon focus:ring-1 focus:ring-maroon text-maroon"
                     />
                   </div>
