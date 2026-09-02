@@ -17,7 +17,8 @@ import {
   Trash2, 
   Filter, 
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  Ticket
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -87,6 +88,13 @@ const Dashboard = () => {
           >
             <Plus className="w-4 h-4" />
             <span>Add New Student</span>
+          </button>
+          <button
+            onClick={() => navigate('/admit-card')}
+            className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl transition-all flex items-center gap-2 shadow-sm"
+          >
+            <Ticket className="w-4 h-4" />
+            <span>Admit Cards</span>
           </button>
           <button
             onClick={() => navigate('/report-cards')}
@@ -235,6 +243,13 @@ const Dashboard = () => {
                             title="Edit Marks"
                           >
                             <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => navigate(`/admit-card?studentId=${student.id}`)}
+                            className="p-1.5 text-amber-600 hover:bg-amber-50 rounded-md transition-colors"
+                            title="Generate Admit Card"
+                          >
+                            <Ticket className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => navigate(`/report-cards?studentId=${student.id}`)}

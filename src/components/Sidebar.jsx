@@ -11,6 +11,7 @@ import {
   LogOut, 
   Sparkles,
   FilePlus,
+  Ticket,
   X
 } from 'lucide-react';
 
@@ -21,6 +22,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+    { name: 'Admit Card', path: '/admit-card', icon: Ticket },
     { name: 'Students', path: '/students', icon: Users },
     { name: 'Create Report Card', path: '/create-report-card', icon: FilePlus },
     { name: 'Report Cards', path: '/report-cards', icon: FileText },

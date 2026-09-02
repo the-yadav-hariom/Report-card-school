@@ -15,6 +15,7 @@ import Subjects from './pages/Subjects';
 import ReportCardPage from './pages/ReportCardPage';
 import UpdateReportCardPage from './pages/UpdateReportCardPage';
 import CreateReportCardPage from './pages/CreateReportCardPage';
+import AdmitCardPage from './pages/AdmitCardPage';
 
 const ProtectedLayout = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -132,6 +133,22 @@ const AppRoutes = () => {
         element={
           <ProtectedLayout>
             <ReportCardPage />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/admit-card"
+        element={
+          <ProtectedLayout>
+            <AdmitCardPage />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/admit-card/:id"
+        element={
+          <ProtectedLayout>
+            <AdmitCardPage />
           </ProtectedLayout>
         }
       />
